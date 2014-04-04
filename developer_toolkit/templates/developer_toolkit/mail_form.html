@@ -1,0 +1,30 @@
+{% load future %}
+
+{% load i18n future %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Django developer toolkit by Pragmatic Mates</title>
+        <style type="text/css">
+            .message { color: green; line-height: 3; }
+            .errorlist, .error { color: red; }
+        </style>
+    </head>
+    <body>
+
+        <h1>Django developer toolkit</h1>
+
+        <h2>Debugging email</h2>
+
+        <a href="{% url 'home' %}">{% trans 'Home' %}</a><br><br>
+
+        <span class="message {{ message_class }}">{{ message|default:'' }}</span>
+
+        <form action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Send" />
+        </form>
+    </body>
+</html>

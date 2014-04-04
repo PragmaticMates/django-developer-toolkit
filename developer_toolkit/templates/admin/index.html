@@ -1,0 +1,30 @@
+{% smart_extends "admin/index.html" %}
+{% load future %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="app-developer-toolkit module" style="float:left">
+        <table>
+            <caption>
+                Developer toolkit
+            </caption>
+
+            <tr class="model-developer-toolkit">
+                <th scope="row"><a href="{% url 'toolkit_settings' %}">Settings constants</a></th>
+                <td colspan="2"></td>
+            </tr>
+            <tr class="model-developer-toolkit">
+                <th scope="row"><a href="{% url 'toolkit_environment' %}">Environment</a></th>
+                <td colspan="2"></td>
+            </tr>
+            <tr class="model-developer-toolkit">
+                <th scope="row"><a href="{% url 'toolkit_mail' %}">Debugging Mail</a></th>
+                <td colspan="2"></td>
+            </tr>
+            <tr class="model-developer-toolkit">
+                <th scope="row"><a href="{% url 'toolkit_error' %}">Internal Server Error</a></th>
+                <td colspan="2"></td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
