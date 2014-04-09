@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='django-developer-toolkit',
-    version='0.1.1',
+    version='0.1.2',
     description='Django utility app for Django developers.',
     long_description=open('README.rst').read(),
     author='Pragmatic Mates',
@@ -16,7 +16,7 @@ setup(
         'developer_toolkit',
     ],
     include_package_data=True,
-    install_requires=('django', ),
+    install_requires=('django', 'ordereddict'),
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.5',
