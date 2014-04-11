@@ -115,7 +115,7 @@ class DebugEmailView(FormView):
 
             # create new connection
             connection = mail.get_connection(backend=data['email_backend'])
-            connection.password = data['email_host_password']
+            connection.password = str(data['email_host_password'])
             connection.username = data['email_host_user']
             connection.host = data['email_host']
             connection.port = data['email_port']
