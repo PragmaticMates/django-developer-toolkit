@@ -36,7 +36,10 @@ You may like to add toolkit features to admin. To do so, follow these steps:
 
 3. Add ``os.path.join(ABSOLUTE_PATH_TO_DEVELOPER_TOOLKIT, 'templates'),`` to ``TEMPLATE_DIRS`` in your Django settings file, where ABSOLUTE_PATH_TO_DEVELOPER_TOOLKIT is absolute path to developer toolkit library. For example: ``'/home/project/environment/lib/python2.7/site-packages/developer_toolkit'``
 
-If you have a better idea how to do that, please let me know. Thanks.
+(If you have a better idea how to do that, please let me know. Thanks.)
+
+4. Set ``TEMPLATE_DEBUG`` to True
+
 
 Authors
 -------

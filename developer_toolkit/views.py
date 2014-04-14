@@ -61,16 +61,19 @@ class SettingsView(View):
                 or value is None or isinstance(value, int):
                 settings_dict[key] = value
             else:
-                if isinstance(value, dict):
-                    try:
-                        json.dumps(value)
-                        settings_dict[key] = value
-                    except TypeError:
+                try:
+                    if isinstance(value, dict):
+                        try:
+                            json.dumps(value)
+                            settings_dict[key] = value
+                        except TypeError:
+                            #print key, type(value)
+                            settings_dict[key] = unicode(value)
+                    else:
                         #print key, type(value)
                         settings_dict[key] = unicode(value)
-                else:
-                    #print key, type(value)
-                    settings_dict[key] = unicode(value)
+                except Exception as e:
+                    settings_dict[key] = unicode(e)
 
         settings_dict = OrderedDict(sorted(settings_dict.items()))
         return self.return_response(settings_dict)
