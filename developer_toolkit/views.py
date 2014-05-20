@@ -100,6 +100,8 @@ class DebugEmailView(FormView):
         return super(DebugEmailView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        data = form.cleaned_data
+
         try:
             data = form.cleaned_data
 
@@ -126,9 +128,9 @@ class DebugEmailView(FormView):
 
             # message
             ip_address = self.request.META.get('REMOTE_ADDR', '')
-            message_html = 'This email came from %s and was sent by %s.<br>' % (getattr(settings, 'HOST_URL', ip_address), self.request.user)
+            message_html = u'This email came from %s and was sent by %s.<br>' % (getattr(settings, 'HOST_URL', ip_address), self.request.user)
             for key in data:
-                message_html += "<br>%s: %s" % (key, data[key])
+                message_html += u"<br>%s: %s" % (key, data[key])
 
             msg = EmailMultiAlternatives(subject, '', from_email, recipients, connection=connection)
             msg.attach_alternative(message_html, "text/html")
