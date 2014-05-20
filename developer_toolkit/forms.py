@@ -12,6 +12,6 @@ class DebugEmailForm(forms.Form):
     email_host_password = forms.CharField(initial=getattr(settings, 'EMAIL_HOST_PASSWORD', None))
     email_host_user = forms.CharField(initial=getattr(settings, 'EMAIL_HOST_USER', None))
     email_port = forms.IntegerField(initial=getattr(settings, 'EMAIL_PORT', None))
-    email_use_tls = forms.BooleanField(initial=getattr(settings, 'EMAIL_USE_TLS', True))
+    email_use_tls = forms.BooleanField(initial=getattr(settings, 'EMAIL_USE_TLS', True), required=False)
     subject = forms.CharField(initial=_(u'Debugging email'))
     message = forms.CharField()
