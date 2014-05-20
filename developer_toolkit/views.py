@@ -100,8 +100,6 @@ class DebugEmailView(FormView):
         return super(DebugEmailView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        data = form.cleaned_data
-
         try:
             data = form.cleaned_data
 
