@@ -5,7 +5,8 @@ Django utility app for Django developers with these features:
 
 - settings constants
 - debugging email configuration
-- internal server error view
+- internal server error template view
+- raise exception view
 - environment constants
 
 Tested on Django 1.4.5.
