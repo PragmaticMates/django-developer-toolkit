@@ -17,7 +17,7 @@ from django.core import mail
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
 from django.template.base import TemplateDoesNotExist
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _
 from django.views.generic import TemplateView, View, FormView
 
 from forms import DebugEmailForm
@@ -60,7 +60,7 @@ class RaiseExceptionView(View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated() or not request.user.is_superuser:
             return HttpResponseForbidden('You have to be logged in as superuser')
-        raise Exception(_('This Exception was raised by DebugErrorView of django-developer-toolkit library.'))
+        raise Exception(ugettext('This Exception was raised by DebugErrorView of django-developer-toolkit library.'))
 
 
 class SettingsView(View):
