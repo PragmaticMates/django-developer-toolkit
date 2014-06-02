@@ -1,3 +1,5 @@
+from django.template.loader import get_template
+
 __author__ = 'Erik Telepovsky'
 
 import json
@@ -13,7 +15,9 @@ except ImportError:
 from django.conf import settings
 from django.core import mail
 from django.core.mail import EmailMultiAlternatives
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.template.base import TemplateDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, View, FormView
 
 from forms import DebugEmailForm
@@ -37,14 +41,26 @@ class EnvironmentView(View):
         return HttpResponse(loc_info + '<br/>' + environ)
 
 
-class DebugErrorView(TemplateView):
+class DebugErrorTemplateView(TemplateView):
     template_name = '500.html'
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated() or not request.user.is_superuser:
             return HttpResponseForbidden('You have to be logged in as superuser')
-        #result ='a' + 1
-        return super(DebugErrorView, self).dispatch(request, *args, **kwargs)
+
+        try:
+            get_template(self.template_name)
+        except TemplateDoesNotExist:
+            return HttpResponseBadRequest(_(u'Template with name "%s" does not exist.' % self.template_name))
+
+        return super(DebugErrorTemplateView, self).dispatch(request, *args, **kwargs)
+
+
+class RaiseExceptionView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated() or not request.user.is_superuser:
+            return HttpResponseForbidden('You have to be logged in as superuser')
+        raise Exception(_('This Exception was raised by DebugErrorView of django-developer-toolkit library.'))
 
 
 class SettingsView(View):
