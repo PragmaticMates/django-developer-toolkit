@@ -5,6 +5,7 @@ __author__ = 'Erik Telepovsky'
 import json
 import locale
 import os
+import pprint as pp
 import sys
 
 try:
@@ -104,6 +105,15 @@ class SettingsView(View):
         response["Access-Control-Max-Age"] = "1000"
         response["Access-Control-Allow-Headers"] = "*"
         return response
+
+
+class RequestView(View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated() or not request.user.is_superuser:
+            return HttpResponseForbidden('You have to be logged in as superuser')
+        pretty_request = pp.pformat(request)
+        pretty_request = pretty_request.replace('\n', '<br>')
+        return HttpResponse(pretty_request)
 
 
 class DebugEmailView(FormView):

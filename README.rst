@@ -4,6 +4,7 @@ django-developer-toolkit
 Django utility app for Django developers with these features:
 
 - settings constants
+- request object data
 - debugging email configuration
 - internal server error template view
 - raise exception view
