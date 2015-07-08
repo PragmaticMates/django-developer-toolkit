@@ -64,36 +64,33 @@ class RaiseExceptionView(View):
         raise Exception(ugettext('This Exception was raised by DebugErrorView of django-developer-toolkit library.'))
 
 
-class SettingsView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated() or not request.user.is_superuser:
-            return HttpResponseForbidden('You have to be logged in as superuser')
-
-        settings_dict = dict()
-        for key in dir(settings):
-            value = getattr(settings, key, None)
+class ObjectToDictMixin(object):
+    def obj_to_dict(self, obj):
+        result = dict()
+        for key in dir(obj):
+            value = getattr(obj, key, None)
 
             if isinstance(value, basestring) or isinstance(value, tuple) \
                 or isinstance(value, list) or isinstance(value, bool)\
                 or value is None or isinstance(value, int):
-                settings_dict[key] = value
+                result[key] = unicode(value)
             else:
                 try:
                     if isinstance(value, dict):
                         try:
                             json.dumps(value)
-                            settings_dict[key] = value
+                            result[key] = value
                         except TypeError:
                             #print key, type(value)
-                            settings_dict[key] = unicode(value)
+                            result[key] = unicode(value)
                     else:
                         #print key, type(value)
-                        settings_dict[key] = unicode(value)
+                        result[key] = unicode(value)
                 except Exception as e:
-                    settings_dict[key] = unicode(e)
+                    result[key] = unicode(e)
 
-        settings_dict = OrderedDict(sorted(settings_dict.items()))
-        return self.return_response(settings_dict)
+        result = OrderedDict(sorted(result.items()))
+        return result
 
     def return_response(self, obj, response_class=HttpResponse):
         response = response_class(
@@ -107,13 +104,18 @@ class SettingsView(View):
         return response
 
 
-class RequestView(View):
+class SettingsView(ObjectToDictMixin, View):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated() or not request.user.is_superuser:
             return HttpResponseForbidden('You have to be logged in as superuser')
-        pretty_request = pp.pformat(request)
-        pretty_request = pretty_request.replace('\n', '<br>')
-        return HttpResponse(pretty_request)
+        return self.return_response(self.obj_to_dict(settings))
+
+
+class RequestView(ObjectToDictMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated() or not request.user.is_superuser:
+            return HttpResponseForbidden('You have to be logged in as superuser')
+        return self.return_response(self.obj_to_dict(request))
 
 
 class DebugEmailView(FormView):
