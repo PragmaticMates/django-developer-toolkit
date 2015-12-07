@@ -1,11 +1,8 @@
-from django.template.loader import get_template
-
 __author__ = 'Erik Telepovsky'
 
 import json
 import locale
 import os
-import pprint as pp
 import sys
 
 try:
@@ -17,7 +14,15 @@ from django.conf import settings
 from django.core import mail
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
-from django.template.base import TemplateDoesNotExist
+
+try:
+    # Django < 1.9
+    from django.template.base import TemplateDoesNotExist
+except ImportError:
+    # Django >= 1.9
+    from django.template import TemplateDoesNotExist
+
+from django.template.loader import get_template
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.views.generic import TemplateView, View, FormView
 
@@ -146,8 +151,8 @@ class DebugEmailView(FormView):
 
             # create new connection
             connection = mail.get_connection(backend=data['email_backend'])
-            connection.password = str(data['email_host_password'])
-            connection.username = data['email_host_user']
+            connection.password = data['email_host_password'] or ''
+            connection.username = data['email_host_user'] or ''
             connection.host = data['email_host']
             connection.port = data['email_port']
             connection.use_tls = data['email_use_tls']
