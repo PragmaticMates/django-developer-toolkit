@@ -1,14 +1,14 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from views import DebugErrorTemplateView, RaiseExceptionView, \
     SettingsView, DebugEmailView, EnvironmentView, RequestView
 
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^environment/$', EnvironmentView.as_view(), name='toolkit_environment'),
     url(r'^request/$', RequestView.as_view(), name='toolkit_request'),
     url(r'^mail/', DebugEmailView.as_view(), name='toolkit_mail'),
     url(r'^error-template/', DebugErrorTemplateView.as_view(), name='toolkit_error_template'),
     url(r'^exception/', RaiseExceptionView.as_view(), name='toolkit_exception'),
     url(r'^settings/', SettingsView.as_view(), name='toolkit_settings'),
-)
+]
